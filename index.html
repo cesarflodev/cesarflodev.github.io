@@ -13,7 +13,7 @@
     <p>Flappy Bird in Dragon</p>
     
     <script type="text/processing">
-import ddf.minim.*;  // Import Minim library
+//import ddf.minim.*;  // Import Minim library
 PImage goku, bg, bg2, topPipe, botPipe; // Background, Goku, Pipes
 Minim minim;  // Declare a Minim object
 AudioPlayer flapSound;  // Declare a variable for the sound
@@ -34,8 +34,8 @@ void setup() {
   topPipe = loadImage("toppipe.png");
   botPipe = loadImage("botpipe.png");
 
-  minim = new Minim(this);  // Initialize Minim
-  flapSound = minim.loadFile("flap.mp3");  // Load the flap sound
+  //minim = new Minim(this);  // Initialize Minim
+  //flapSound = minim.loadFile("flap.mp3");  // Load the flap sound
 
   bgWidth = bg.width;  // Save the width of the background
   bgx1 = 0;             // Start position for first background
@@ -163,8 +163,8 @@ void mousePressed() {
     Vy = -10;  // Make Goku jump
 
     // Restart the flap sound from the beginning
-    flapSound.rewind();  // Rewind the sound to the beginning
-    flapSound.play();    // Play the sound when Goku jumps
+    //flapSound.rewind();  // Rewind the sound to the beginning
+    //flapSound.play();    // Play the sound when Goku jumps
   } else {
     // Restart the game if it's over
     gameState = 0;
