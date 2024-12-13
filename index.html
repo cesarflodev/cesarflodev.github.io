@@ -1,197 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dragon Ball Flappy Bird</title>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.4.8/processing.min.js"></script>
-    <style>
-        body {
-            text-align: center;
-            font-family: Arial, sans-serif;
+<!Doctype: HTML w/ Processing>
+
+<html>
+
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>Processing Demo</title>
+      <script type="text/javascript" src="js/processing.js"></script>
+  </head>
+  
+  <body>
+    <h1>Granada High Tutorial</h1>
+    <p>Processing demo</p>
+    
+    <script type="text/processing">
+    
+      Ball[] ball;
+
+      void setup(){
+        size(700, 600);
+        frameRate(100);
+        ball = new Ball[100];
+        for(int i = 0; i < ball.length; i++){
+            ball[i] = new Ball();
         }
-        canvas {
-            border: 1px solid black;
-        }
-    </style>
-</head>
-<body>
-    <h1>DRAGON BALL FLAPPY BIRD</h1>
-    <p>FLAPPY BIRD BUT IT'S DRAGON BALL</p>
+      }
 
-    <canvas id="gameCanvas" width="800" height="750"></canvas>
 
-    <script type="application/processing">
-        // Your Processing code goes here
 
-        import ddf.minim.*;
-
-        PImage goku, bg, bg2, topPipe, botPipe;
-        Minim minim;
-        AudioPlayer flapSound;
-        float bgx1, bgx2, bgSpeed = 2;
-        float bgWidth;
-        int gokuX, gokuY, Vy, g;
-        int pipeGap = 200, pipeWidth = 200, pipeSpeed = 3;
-        ArrayList<Pipe> pipes;
-        int gameState = 0, score = 0, highScore = 0;
-        int frameTime = 0;
-
-        void setup() {
-            size(800, 750); // Set canvas size
-
-            goku = loadImage("goku.png");
-            bg = loadImage("city.png");
-            bg2 = loadImage("city2.png");
-            topPipe = loadImage("toppipe.png");
-            botPipe = loadImage("botpipe.png");
-
-            minim = new Minim(this);
-            flapSound = minim.loadFile("flap.mp3");
-
-            bgWidth = bg.width;
-            bgx1 = 0;
-            bgx2 = bgWidth;
-
-            gokuX = 100;
-            gokuY = height / 2;
-            Vy = 0;
-            g = 1;
-
-            pipes = new ArrayList<Pipe>();
-
-            for (int i = 0; i < 3; i++) {
-                pipes.add(new Pipe(width + i * (width / 3), random(200, height - pipeGap - 200)));
-            }
-        }
-
-        void draw() {
-            long startTime = millis();
-
-            if (gameState == 0) {
-                background(0);
-
-                image(bg, bgx1, 0);
-                image(bg2, bgx2, 0);
-
-                bgx1 -= bgSpeed;
-                bgx2 -= bgSpeed;
-
-                if (bgx1 <= -bgWidth) {
-                    bgx1 = bgx2 + bgWidth;
-                }
-
-                if (bgx2 <= -bgWidth) {
-                    bgx2 = bgx1 + bgWidth;
-                }
-
-                for (int i = pipes.size() - 1; i >= 0; i--) {
-                    Pipe p = pipes.get(i);
-                    p.update();
-                    p.display();
-
-                    if (p.x + pipeWidth < gokuX && !p.isScored) {
-                        score++;
-                        p.isScored = true;
-                    }
-
-                    if (p.x + pipeWidth < 0) {
-                        p.resetPosition();
-                    }
-                }
-
-                image(goku, gokuX, gokuY - goku.height / 2);
-
-                gokuY += Vy;
-                Vy += g;
-
-                if (gokuY > height - goku.height) {
-                    gokuY = height - goku.height;
-                }
-
-                if (gokuY < 0) {
-                    gokuY = 0;
-                }
-
-                for (int i = 0; i < pipes.size(); i++) {
-                    Pipe p = pipes.get(i);
-                    if (gokuX > p.x && gokuX < p.x + pipeWidth) {
-                        if (!(gokuY > p.topHeight && gokuY < p.topHeight + pipeGap)) {
-                            gameState = 1;
-                            if (score > highScore) {
-                                highScore = score;
-                            }
-                        }
-                    }
-                }
-
-                fill(255);
-                textSize(30);
-                textAlign(LEFT, TOP);
-                text("Score: " + score, 20, 20);
-
-                textAlign(RIGHT, TOP);
-                text("High Score: " + highScore, width - 20, 20);
-            } else {
-                fill(255, 0, 0);
-                textSize(50);
-                textAlign(CENTER, CENTER);
-                text("Game Over!", width / 2, height / 2);
-                text("Click to Restart", width / 2, height / 2 + 60);
-
-                fill(255);
-                textSize(30);
-                textAlign(CENTER, TOP);
-                text("Final Score: " + score, width / 2, height / 2 + 120);
+      void draw(){
+          background(155,0,0);
+            for(int i = 0; i < ball.length; i++){
+                ball[i].display();
             }
 
-            long endTime = millis();
-            frameTime = (int)(endTime - startTime);
-            println("Frame time: " + frameTime + " ms");
-        }
+      }
+      class Ball{
 
-        void mousePressed() {
-            if (gameState == 0) {
-                Vy = -10;
-                flapSound.rewind();
-                flapSound.play();
-            } else {
-                gameState = 0;
-                gokuY = height / 2;
-                pipes.clear();
-                for (int i = 0; i < 3; i++) {
-                    pipes.add(new Pipe(width + i * (width / 3), random(200, height - pipeGap - 200)));
-                }
-                score = 0;
-            }
-        }
+          float x;
+          float y;
+          float Vx;
+          float Vy;
+          float r,g,b,o;
+          float d;
 
-        class Pipe {
-            float x, topHeight, bottomHeight;
-            boolean isScored = false;
+          Ball(){
+              x = random(width);
+              y = random(height);
+              Vx = random(-5,5);
+              Vy = random(-5,5);
+              r = random(255);
+              g = random(255);
+              b = random(255);
+              o = random(255);
+              d = random(30) + 15;
+          }
 
-            Pipe(float startX, float startY) {
-                x = startX;
-                topHeight = startY;
-                bottomHeight = height - startY - pipeGap;
-            }
+          void display(){
+              fill(r,g,b,o);
+              ellipse(x,y,d,d);
+              x += Vx;
+              y += Vy;
+              if(x > width || x < 0){
+                  Vx *= -1;
+              }
+              if(y > height || y < 0){
+                  Vy *= -1;
+              }
+          }
+    }
 
-            void update() {
-                x -= pipeSpeed;
-            }
 
-            void display() {
-                image(topPipe, x, 0, pipeWidth, topHeight);
-                image(botPipe, x, height - bottomHeight, pipeWidth, bottomHeight);
-            }
-
-            void resetPosition() {
-                x = width + 50;
-                topHeight = random(200, height - pipeGap - 200);
-                bottomHeight = height - topHeight - pipeGap;
-                isScored = false;
-            }
-        }
     </script>
-</body>
+    <canvas id="sketch" style="border: 1px solid black;"></canvas>
+    
+  </body>
+  
 </html>
