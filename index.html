@@ -13,10 +13,7 @@
     <p>Flappy Bird in Dragon</p>
     
     <script type="text/processing">
-//import ddf.minim.*;  // Import Minim library
 PImage goku, bg, bg2, topPipe, botPipe; // Background, Goku, Pipes
-Minim minim;  // Declare a Minim object
-AudioPlayer flapSound;  // Declare a variable for the sound
 float bgx1, bgx2, bgSpeed = 2;  // Background movement
 float bgWidth; // Background width
 int gokuX, gokuY, Vy, g; // Goku position and gravity variables
@@ -33,9 +30,6 @@ void setup() {
   bg2 = loadImage("city2.png");  // Load second background image
   topPipe = loadImage("toppipe.png");
   botPipe = loadImage("botpipe.png");
-
-  //minim = new Minim(this);  // Initialize Minim
-  //flapSound = minim.loadFile("flap.mp3");  // Load the flap sound
 
   bgWidth = bg.width;  // Save the width of the background
   bgx1 = 0;             // Start position for first background
