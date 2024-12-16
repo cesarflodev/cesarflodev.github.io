@@ -155,10 +155,6 @@ void draw() {
 void mousePressed() {
   if (gameState == 0) {
     Vy = -10;  // Make Goku jump
-
-    // Restart the flap sound from the beginning
-    //flapSound.rewind();  // Rewind the sound to the beginning
-    //flapSound.play();    // Play the sound when Goku jumps
   } else {
     // Restart the game if it's over
     gameState = 0;
@@ -203,6 +199,7 @@ class Pipe {
     isScored = false;  // Reset the scored flag
   }
 }
+
     </script>
     <canvas id="sketch" style="border: 1px solid black;"></canvas>
     
